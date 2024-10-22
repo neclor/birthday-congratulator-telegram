@@ -3,6 +3,7 @@ from datetime import datetime
 
 from birthday_manager import *
 
+
 logging.basicConfig(
 	filename = "bot.log",
 	level = logging.INFO,
@@ -26,8 +27,12 @@ def run() -> None:
 
 
 
+def aaaa():
+	birthdays: list[dict] = get_birthdays()
+	congratulated_today: list[str] = get_congratulated_today()
 
-
+	for birthday in birthdays:
+		if birthday["name"] in congratulated_today:
 
 
 

@@ -29,11 +29,7 @@ async def connection():
 	while True:
 		try:
 			await bot.run_until_disconnected()
-		except (FloodWait, SessionPasswordNeededError, RPCError) as e:
-			print(f"Ошибка: {e}. Ожидание перед повторной попыткой...")
-			await asyncio.sleep(10)  # Ожидание перед повторным подключением
 		except Exception as e:
-			print(f"Неожиданная ошибка: {e}. Ожидание перед повторной попыткой...")
 			await asyncio.sleep(10)  # Ожидание перед повторным подключением
 
 

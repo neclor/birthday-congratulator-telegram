@@ -5,9 +5,8 @@ from api_data import *
 bot: TelegramClient = TelegramClient(MY_SESSION_NAME, API_ID, API_HASH)
 
 
-
 @bot.on(events.NewMessage(pattern = "/start"))
-async def start(event):
+async def start_command(event):
 	await event.respond("Birthday commands:\n/add - add new birthday\n/remove - delete birthday")
 
 

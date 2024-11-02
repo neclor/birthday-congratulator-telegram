@@ -1,14 +1,12 @@
-import asyncio
-import time
 import logging
+
+import asyncio
 from telethon.sync import TelegramClient, events
+
 from datetime import datetime
-import telethon.sync
 
-from bot import *
-from birthday_manager import *
-
-
+import bot
+import birthday_manager
 
 
 logging.basicConfig(
@@ -19,56 +17,29 @@ logging.basicConfig(
 	handlers = [
         logging.FileHandler("bot.log"),
         logging.StreamHandler()])
-logger = logging.getLogger(__name__)
+logger: logging.Logger = logging.getLogger(__name__)
 
 
-def start_bot() -> None:
-	logger.info("Bot started")
-	while True:
-		try:
-			logger.info("Try to connect ...")
-			bot.loop.run_until_complete(main())
-		except Exception as e:
-			logger.warning(e)
-			logger.info("Wait 10 sec ...")
-			time.sleep(10)
+def launch() -> None:
+	logger.info("Launch...")
+
+	loop: asyncio.AbstractEventLoop = asyncio.get_event_loop()
+	loop.create_task(bot.connection())
+
+	loop.run_forever()
+	logger.info("Finish")
 
 
-async def main() -> None:
-	logger.info("Connected")
-	logger.info("Start sending messages")
+async def happy_birthday() -> None:
+	for birthday in birthday_manager.get_birthdays():
+		pass
 
-	while True:
-		try:
-			if not bot.is_connected():
-				logger.info("Try to connect ...")
-				await bot.connect()
-
-			await bot.send_message("me", "test")
-			logger.info("Message sent")
-			logger.info("Wait 10 sec ...")
-
-			await asyncio.sleep(10)
-
-		except Exception as e:
-			logger.error(e)
-			logger.warning("Message sending error")
-			logger.info("Wait 10 sec ...")
-			time.sleep(10)
+	pass
 
 
 
 
 
-'''
-def aaaa():
-	birthdays: list[dict] = get_birthdays()
-	congratulated_today: list[str] = get_congratulated_today()
-
-	for birthday in birthdays:
-		if birthday["name"] in congratulated_today:
-			pass
-'''
 
 
 
@@ -76,4 +47,4 @@ def aaaa():
 
 
 if __name__ == "__main__":
-	start_bot()
+	launch()
